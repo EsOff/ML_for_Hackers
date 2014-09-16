@@ -17,7 +17,7 @@
 # All rights reserved.
 
 # NOTE: If you are running this in the R console you must use the 'setwd' command to set the 
-# working directory for the console to whereever you have saved this file prior to running.
+# working directory for the console to wherever you have saved this file prior to running.
 # Otherwise you will see errors when loading data or saving figures!
 
 # Load libraries
@@ -59,7 +59,7 @@ ggsave(plot = ex1,
 # words as features
 get.msg <- function(path)
 {
-  con <- file(path, open = "rt", encoding = "latin1")
+  con <- file(path, open = "rt") # Don't have to specify the encoding here now to read the texts. Some will fail anyway.
   text <- readLines(con)
   # The message always begins after the first full line break
   msg <- text[seq(which(text == "")[1] + 1, length(text), 1)]
@@ -101,7 +101,7 @@ count.word <- function(path, term)
 }
 
 # This is the our workhorse function for classifying email.  It takes 
-# two required paramters: a file path to an email to classify, and
+# two required parameters: a file path to an email to classify, and
 # a data frame of the trained data.  The function also takes two 
 # optional parameters.  First, a prior over the probability that an email
 # is SPAM, which we set to 0.5 (naive), and constant value for the
@@ -188,7 +188,7 @@ easyham.df <- transform(easyham.df,
                         density = easyham.density,
                         occurrence = easyham.occurrence)
 
-# Run classifer against HARD HAM
+# Run classifier against HARD HAM
 hardham.docs <- dir(hardham.path)
 hardham.docs <- hardham.docs[which(hardham.docs != "cmds")]
 
@@ -227,7 +227,7 @@ init.plot1 <- ggplot(init.df, aes(x = html, y = table)) +
   geom_point(aes(shape = type)) +
   scale_shape_manual(values = c("SPAM" = 1, "EASYHAM" = 3), name = "Email Type") +
   xlab("Frequency of 'html'") +
-  ylab("Freqeuncy of 'table'") +
+  ylab("Frequency of 'table'") +
   stat_abline(yintersept = 0, slope = 1) +
   theme_bw()
 ggsave(plot = init.plot1,
@@ -239,7 +239,7 @@ init.plot2 <- ggplot(init.df, aes(x = html, y = table)) +
   geom_point(aes(shape = type), position = "jitter") +
   scale_shape_manual(values = c("SPAM" = 1, "EASYHAM" = 3), name = "Email Type") +
   xlab("Frequency of 'html'") +
-  ylab("Freqeuncy of 'table'") +
+  ylab("Frequency of 'table'") +
   stat_abline(yintersept = 0, slope = 1) +
   theme_bw()
 ggsave(plot = init.plot2,
@@ -247,7 +247,7 @@ ggsave(plot = init.plot2,
        width = 10,
        height = 10)
 
-# Finally, attempt to classify the HARDHAM data using the classifer developed above.
+# Finally, attempt to classify the HARDHAM data using the classifier developed above.
 # The rule is to classify a message as SPAM if Pr(email) = SPAM > Pr(email) = HAM
 spam.classifier <- function(path)
 {
