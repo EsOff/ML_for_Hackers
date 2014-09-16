@@ -19,7 +19,7 @@
 # All rights reserved.
 
 # NOTE: If you are running this in the R console you must use the 'setwd' command to set the 
-# working directory for the console to whereever you have saved this file prior to running.
+# working directory for the console to wherever you have saved this file prior to running.
 # Otherwise you will see errors when loading data or saving figures!
 
 # Load libraries and data
@@ -48,6 +48,10 @@ names(ufo) <- c("DateOccurred", "DateReported",
                 "Location", "ShortDescription",
                 "Duration", "LongDescription")
 
+# Now we can convert the strings to Date objects and work with them properly
+ufo$DateOccurred <- as.Date(ufo$DateOccurred, format = "%Y%m%d")
+ufo$DateReported <- as.Date(ufo$DateReported, format = "%Y%m%d")
+
 # To work with the dates, we will need to convert the YYYYMMDD string to an R Date
 # type using the 'strptime' function
 
@@ -56,16 +60,12 @@ names(ufo) <- c("DateOccurred", "DateReported",
 # strings are always 8 characters long, and any deviation from this would indicate
 # a row to ignore.  We will use the 'ifelse' function to construct a vector of
 # Booleans indicating the problem rows
-good.rows <- ifelse(nchar(ufo$DateOccurred) != 8 |
-                    nchar(ufo$DateReported) != 8,
+good.rows <- ifelse(is.na(ufo$DateOccurred) |
+                    is.na(ufo$DateReported) ,
                     FALSE,
                     TRUE)
-length(which(!good.rows))      # While 731 rows may seem like a lot, out of over 60K
+length(which(!good.rows))      # While 733 rows may seem like a lot, out of over 60K
 ufo <- ufo[good.rows, ]        # it is only about 0.6% of the total number of records.
-
-# Now we can convert the strings to Date objects and work with them properly
-ufo$DateOccurred <- as.Date(ufo$DateOccurred, format = "%Y%m%d")
-ufo$DateReported <- as.Date(ufo$DateReported, format = "%Y%m%d")
 
 # It will be useful to create separate columns for both town and state from the Location 
 # column.  To do so we will use the 'strsplit' function to perform the regex.
@@ -142,7 +142,7 @@ ggsave(plot = new.hist,
        width = 8)
 
 # Now that we have the data we want, let's look at some aggregations.  We will use
-# the 'ddply' funtion in the plyr package. But first, we create a column of just
+# the 'ddply' function in the plyr package. But first, we create a column of just
 # the Year-Month of each incident.
 ufo.us$YearMonth <- strftime(ufo.us$DateOccurred, format = "%Y-%m")
 
@@ -216,7 +216,7 @@ ggsave(plot = state.plot,
        height = 8.5)
 
 
-# Create a new graph where the number of signtings is normailzed by the state population
+# Create a new graph where the number of sightings is normalized by the state population
 state.pop <- read.csv(file.path('data/census.csv'), stringsAsFactors=FALSE)
 
 state.pop$abbs <- sapply(state.pop$State, function(x) state.abb[grep(paste('^', x, sep=''), state.name)])
