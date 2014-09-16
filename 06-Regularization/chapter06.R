@@ -14,7 +14,7 @@
 # All rights reserved.
 
 # NOTE: If you are running this in the R console you must use the 'setwd' command to set the 
-# working directory for the console to whereever you have saved this file prior to running.
+# working directory for the console to wherever you have saved this file prior to running.
 # Otherwise you will see errors when loading data or saving figures!
 
 library('ggplot2')
@@ -276,7 +276,7 @@ lm.fit <- lm(y ~ x)
 l2.model.complexity <- sum(coef(lm.fit) ^ 2)
 l1.model.complexity <- sum(abs(coef(lm.fit)))
 
-# Ninteenth code snippet
+# Nineteenth code snippet
 set.seed(1)
 
 x <- seq(0, 1, by = 0.01)
@@ -396,6 +396,7 @@ corpus <- Corpus(DataframeSource(documents))
 corpus <- tm_map(corpus, tolower)
 corpus <- tm_map(corpus, stripWhitespace)
 corpus <- tm_map(corpus, removeWords, stopwords('english'))
+corpus <- tm_map(corpus, PlainTextDocument) # http://stackoverflow.com/questions/24191728/documenttermmatrix-error-on-corpus-argument
 
 dtm <- DocumentTermMatrix(corpus)
 
