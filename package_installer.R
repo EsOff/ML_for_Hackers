@@ -36,15 +36,14 @@ cran.packages <- c("e1071",
 
 cat("This script will now attempt to install all of the R packages used in 'Machine Learning for Hackers'")
 
-for(p in cran.packages) {
-    if(!suppressWarnings(require(p, character.only = TRUE, quietly = TRUE))) {
+for (p in cran.packages) {
+    if (!suppressWarnings(require(p, character.only = TRUE, quietly = TRUE))) {
         cat(paste(p, "missing, will attempt to install\n"))
         install.packages(p, dependencies = TRUE)
-    }
-    else {
+    } else {
         cat(paste(p, "installed OK\n"))
     }
 }
 
 print("### All required packages installed ###")
-
+ 
